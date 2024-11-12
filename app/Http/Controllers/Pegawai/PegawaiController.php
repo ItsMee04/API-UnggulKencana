@@ -32,13 +32,13 @@ class PegawaiController extends Controller
             'jabatan_id'    => 'required|' . Rule::in(Jabatan::where('status', 1)->pluck('id')),
             'alamat'        => 'required',
             'status'        => 'required',
-            'avatar'        => 'mimes:png,jpg,jpeg',
+            'avatar_file'   => 'mimes:png,jpg,jpeg',
         ]);
 
-        if ($request->file('avatar')) {
-            $extension = $request->file('avatar')->getClientOriginalExtension();
+        if ($request->file('avatar_file')) {
+            $extension = $request->file('avatar_file')->getClientOriginalExtension();
             $newAvatar = $request->nip . '.' . $extension;
-            $request->file('avatar')->storeAs('Avatar', $newAvatar);
+            $request->file('avatar_file')->storeAs('Avatar', $newAvatar);
             $request['avatar'] = $newAvatar;
         }
 

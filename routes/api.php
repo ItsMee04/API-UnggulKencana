@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Jenis\JenisController;
 use App\Http\Controllers\Pegawai\PegawaiController;
 use App\Http\Controllers\Produk\ProdukController;
+use App\Http\Controllers\Scan\ScanController;
 use App\Http\Controllers\User\UserController;
 use App\Models\Pegawai;
 use App\Models\Role;
@@ -56,7 +57,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('produk/{id}', [ProdukController::class, 'show']);
     Route::patch('produk/{id}', [ProdukController::class, 'update']);
     Route::get('delete-produk/{id}', [ProdukController::class, 'delete']);
+    Route::get('streambarcode/{id}', [ProdukController::class, 'streamBarcode']);
+    Route::get('downloadbarcode/{id}', [ProdukController::class, 'downloadBarcode']);
 
+    //SCAN BARCODE
+    Route::get('scanbarcode/{id}', [ScanController::class, 'scanBarcode']);
 
     Route::post('logout', [AuthController::class, 'logout']);
 });

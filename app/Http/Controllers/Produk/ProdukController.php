@@ -45,7 +45,10 @@ class ProdukController extends Controller
             'harga_jual'    =>  'integer',
             'harga_beli'    =>  'integer',
             'keterangan'    =>  'string',
-            'berat'         =>  'required|decimal:1,1',
+            'berat'         =>  [
+                'required',
+                'regex:/^\d+\.\d{1}$/'
+            ],
             'karat'         =>  'required|integer',
             'image_file'    =>  'nullable|mimes:png,jpg',
             'status'        =>  'required'
@@ -132,5 +135,40 @@ class ProdukController extends Controller
         $produk->delete();
 
         return response()->json(['success' => true, 'message' => 'Data Produk Berhasil Dihapus']);
+    }
+
+    public function streamBarcode($id)
+    {
+
+        $produk = Produk::where('id', $id)->first();
+        $filePath = 'storage/barcode/' . $produk->image;
+
+        if (File::exists($filePath)) {
+            $file = fopen($filePath, 'r'); // Membuka file untuk dibaca
+
+            return response()->stream(function () use ($file) {
+                while (!feof($file)) {
+                    echo fread($file, 1024); // Membaca file per 1024 byte
+                }
+                fclose($file); // Menutup file setelah selesai
+            }, 200, [
+                'Content-Type' => 'image/png',  // Ganti sesuai dengan tipe file Anda
+                'Content-Disposition' => 'attachment; filename="' . $produk . '"',
+            ]);
+        }
+
+        return response()->json(['success' => false, 'message' => 'Data Barcode Tidak Ditemukan']);
+    }
+
+    public function downloadBarcode($id)
+    {
+        $produk = Produk::where('id', $id)->first();
+        $filePath = 'storage/barcode/' . $produk->image;
+
+        if (file_exists($filePath)) {
+            return response()->download($filePath);
+        }
+
+        return response()->json(['success' => false, 'message' => 'Data Barcode Tidak Ditemukan']);
     }
 }
