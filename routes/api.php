@@ -3,8 +3,10 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Jenis\JenisController;
 use App\Http\Controllers\Pegawai\PegawaiController;
+use App\Http\Controllers\Pelanggan\PelangganController;
 use App\Http\Controllers\Produk\ProdukController;
 use App\Http\Controllers\Scan\ScanController;
+use App\Http\Controllers\Suplier\SuplierController;
 use App\Http\Controllers\User\UserController;
 use App\Models\Pegawai;
 use App\Models\Role;
@@ -62,6 +64,20 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //SCAN BARCODE
     Route::get('scanbarcode/{id}', [ScanController::class, 'scanBarcode']);
+
+    //PELANGGAN
+    Route::get('pelanggan', [PelangganController::class, 'index']);
+    Route::post('pelanggan', [PelangganController::class, 'store']);
+    Route::get('pelanggan/{id}', [PelangganController::class, 'show']);
+    Route::patch('pelanggan/{id}', [PelangganController::class, 'update']);
+    Route::get('delete-pelanggan/{id}', [PelangganController::class, 'delete']);
+
+    //SUPLIER
+    Route::get('suplier', [SuplierController::class, 'index']);
+    Route::post('suplier', [SuplierController::class, 'store']);
+    Route::get('suplier/{id}', [SuplierController::class, 'show']);
+    Route::patch('suplier/{id}', [SuplierController::class, 'update']);
+    Route::get('delete-suplier/{id}', [SuplierController::class, 'delete']);
 
     Route::post('logout', [AuthController::class, 'logout']);
 });
