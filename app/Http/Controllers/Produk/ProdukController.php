@@ -29,7 +29,7 @@ class ProdukController extends Controller
 
     public function index()
     {
-        $produk = Produk::all();
+        $produk = Produk::with('jenis')->get();
 
         if ($produk->isEmpty()) {
             return response()->json(['success' => true, 'message' => 'Data Produk Tidak Ditemukan']);
@@ -153,7 +153,7 @@ class ProdukController extends Controller
                 fclose($file); // Menutup file setelah selesai
             }, 200, [
                 'Content-Type' => 'image/png',  // Ganti sesuai dengan tipe file Anda
-                'Content-Disposition' => 'attachment; filename="' . $produk . '"',
+                'Content-Disposition' => 'attachment; filename="' . $produk . '"'
             ]);
         }
 

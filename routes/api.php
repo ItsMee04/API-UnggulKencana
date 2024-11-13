@@ -1,18 +1,20 @@
 <?php
 
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\Jenis\JenisController;
-use App\Http\Controllers\Pegawai\PegawaiController;
-use App\Http\Controllers\Pelanggan\PelangganController;
-use App\Http\Controllers\Produk\ProdukController;
-use App\Http\Controllers\Scan\ScanController;
-use App\Http\Controllers\Suplier\SuplierController;
-use App\Http\Controllers\User\UserController;
-use App\Models\Pegawai;
 use App\Models\Role;
+use App\Models\Pegawai;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Scan\ScanController;
+use App\Http\Controllers\User\UserController;
+use App\Http\Controllers\Jenis\JenisController;
+use App\Http\Controllers\Diskon\DiskonController;
+use App\Http\Controllers\Produk\ProdukController;
+use App\Http\Controllers\Pegawai\PegawaiController;
+use App\Http\Controllers\Suplier\SuplierController;
+use App\Http\Controllers\Keranjang\KeranjangController;
+use App\Http\Controllers\Pelanggan\PelangganController;
 
 /*
 |--------------------------------------------------------------------------
@@ -78,6 +80,18 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('suplier/{id}', [SuplierController::class, 'show']);
     Route::patch('suplier/{id}', [SuplierController::class, 'update']);
     Route::get('delete-suplier/{id}', [SuplierController::class, 'delete']);
+
+    //DISKON
+    Route::get('diskon', [DiskonController::class, 'index']);
+    Route::post('diskon', [DiskonController::class, 'store']);
+    Route::get('diskon/{id}', [DiskonController::class, 'show']);
+    Route::patch('diskon/{id}', [DiskonController::class, 'update']);
+    Route::get('delete-diskon/{id}', [DiskonController::class, 'delete']);
+
+    //KERANJANG
+    Route::get('keranjang', [KeranjangController::class, 'index']);
+    Route::post('keranjang/{id}', [KeranjangController::class, 'addtocart']);
+    Route::get('delete-keranjang/{id}', [KeranjangController::class, 'deleteKeranjang']);
 
     Route::post('logout', [AuthController::class, 'logout']);
 });

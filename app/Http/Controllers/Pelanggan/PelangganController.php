@@ -2,14 +2,34 @@
 
 namespace App\Http\Controllers\Pelanggan;
 
+use App\Models\Produk;
+use App\Models\Pelanggan;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Produk\ProdukController;
-use App\Models\Pelanggan;
-use App\Models\Produk;
-use Illuminate\Http\Request;
 
 class PelangganController extends Controller
 {
+    private function generateCodePelanggan()
+    {
+        // Ambil kode customer terakhir dari database
+        $lastCustomer = DB::table('pelanggan')
+            ->orderBy('kodepelanggan', 'desc')
+            ->first();
+
+        // Jika tidak ada customer, mulai dari 1
+        $lastNumber = $lastCustomer ? (int) substr($lastCustomer->kodepelanggan, -5) : 0;
+
+        // Tambahkan 1 pada nomor terakhir
+        $newNumber = $lastNumber + 1;
+
+        // Format kode customer baru
+        $newKodeCustomer = '#C-' . str_pad($newNumber, 5, '0', STR_PAD_LEFT);
+
+        return $newKodeCustomer;
+    }
+
     public function index()
     {
         $pelanggan = Pelanggan::all();
@@ -21,8 +41,7 @@ class PelangganController extends Controller
 
     public function store(Request $request)
     {
-        $controller = new ProdukController();
-        $generateCode = $controller->generateKode();
+        $generateCode = $this->generateCodePelanggan();
 
         $request->validate([
             'nama'          =>  'required',

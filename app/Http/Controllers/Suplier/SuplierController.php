@@ -4,11 +4,32 @@ namespace App\Http\Controllers\Suplier;
 
 use App\Models\Suplier;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Produk\ProdukController;
 
 class SuplierController extends Controller
 {
+    private function generateCodeSuplier()
+    {
+        // Ambil kode customer terakhir dari database
+        $lastCustomer = DB::table('suplier')
+            ->orderBy('kodesuplier', 'desc')
+            ->first();
+
+        // Jika tidak ada customer, mulai dari 1
+        $lastNumber = $lastCustomer ? (int) substr($lastCustomer->kodesuplier, -5) : 0;
+
+        // Tambahkan 1 pada nomor terakhir
+        $newNumber = $lastNumber + 1;
+
+        // Format kode customer baru
+        $newKodeCustomer = '#S-' . str_pad($newNumber, 5, '0', STR_PAD_LEFT);
+
+        return $newKodeCustomer;
+    }
+
+
     public function index()
     {
         $suplier = Suplier::all();
@@ -20,8 +41,7 @@ class SuplierController extends Controller
 
     public function store(Request $request)
     {
-        $controller = new ProdukController();
-        $generateCode = $controller->generateKode();
+        $generateCode = $this->generateCodeSuplier();
 
         $request->validate([
             'nama'          =>  'required',

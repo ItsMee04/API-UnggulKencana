@@ -11,7 +11,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        $user = User::all();
+        $user = User::with('pegawai')->get();
 
         if ($user->isEmpty()) {
             return response()->json(['success' => true, 'message' => 'Data User Tidak Ditemukan']);
