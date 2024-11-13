@@ -92,6 +92,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('keranjang', [KeranjangController::class, 'index']);
     Route::post('keranjang/{id}', [KeranjangController::class, 'addtocart']);
     Route::get('delete-keranjang/{id}', [KeranjangController::class, 'deleteKeranjang']);
+    Route::get('delete-keranjangAll', [KeranjangController::class, 'deleteKeranjangAll']);
 
     Route::post('logout', [AuthController::class, 'logout']);
 });

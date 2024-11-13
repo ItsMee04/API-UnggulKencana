@@ -104,4 +104,19 @@ class KeranjangController extends Controller
             'data' => $keranjang
         ]);
     }
+
+    public function deleteKeranjangAll()
+    {
+        $keranjang = Keranjang::where('status', 1)
+            ->where('user_id', Auth::user()->id)
+            ->update([
+                'status'    =>  0
+            ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Semua Produk berhasil dihapus',
+            'data' => $keranjang
+        ]);
+    }
 }
