@@ -10,6 +10,7 @@ use App\Http\Controllers\Scan\ScanController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\Jenis\JenisController;
 use App\Http\Controllers\Diskon\DiskonController;
+use App\Http\Controllers\Nampan\NampanController;
 use App\Http\Controllers\Produk\ProdukController;
 use App\Http\Controllers\Pegawai\PegawaiController;
 use App\Http\Controllers\Suplier\SuplierController;
@@ -93,6 +94,18 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('keranjang/{id}', [KeranjangController::class, 'addtocart']);
     Route::get('delete-keranjang/{id}', [KeranjangController::class, 'deleteKeranjang']);
     Route::get('delete-keranjangAll', [KeranjangController::class, 'deleteKeranjangAll']);
+
+    //NAMPAN
+    Route::get('nampan', [NampanController::class, 'index']);
+    Route::post('nampan', [NampanController::class, 'store']);
+    Route::get('nampan/{id}', [NampanController::class, 'show']);
+    Route::patch('nampan/{id}', [NampanController::class, 'update']);
+    Route::get('delete-nampan/{id}', [NampanController::class, 'delete']);
+
+    //NAMPAN PRODUK
+    Route::get('nampanproduk/{id}', [NampanController::class, 'nampanProdukIndex']);
+    Route::post('nampanproduk/{id}', [NampanController::class, 'nampanProdukStore']);
+    Route::get('deletenampanProduk/{id}', [NampanController::class, 'nampanProdukDelete']);
 
     Route::post('logout', [AuthController::class, 'logout']);
 });

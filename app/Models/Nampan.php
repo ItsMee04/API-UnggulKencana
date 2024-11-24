@@ -4,33 +4,40 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Pegawai extends Model
+class Nampan extends Model
 {
     use HasFactory;
     use SoftDeletes;
 
     protected $hidden = ['created_at', 'updated_at', 'deleted_at']; // Menyembunyikan created_at dan updated_at secara global
-    protected $table = 'pegawai';
+    protected $table = "nampan";
     protected $fillable = [
-        'nip',
         'nama',
-        'alamat',
-        'kontak',
-        'jabatan_id',
-        'avatar',
+        'jenis_id',
         'status',
     ];
 
     /**
-     * Get the user that owns the Pegawai
+     * Get the jenis that owns the Nampan
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function jabatan(): BelongsTo
+    public function jenis(): BelongsTo
     {
-        return $this->belongsTo(Jabatan::class, 'jabatan_id', 'id');
+        return $this->belongsTo(Jenis::class, 'jenis_id', 'id');
+    }
+
+    /**
+     * Get all of the comments for the Nampan
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function nampanProduk(): HasMany
+    {
+        return $this->hasMany(NampanProduk::class, 'nampan_id');
     }
 }

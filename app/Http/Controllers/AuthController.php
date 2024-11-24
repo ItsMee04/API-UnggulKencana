@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -24,8 +25,8 @@ class AuthController extends Controller
         }
 
         $user->tokens()->delete();
-        $token = $user->createToken('token')->plainTextToken;
-        $user->token = $token;
+        $accessToken = $user->createToken('token', ['access-api'], Carbon::now()->addDays(1)); // 1 hour expiration
+        $user->token = $accessToken->plainTextToken;
 
         unset($user->email_verified_at);
         unset($user->created_at);

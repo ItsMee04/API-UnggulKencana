@@ -15,7 +15,7 @@ class PegawaiController extends Controller
 {
     public function index()
     {
-        $pegawai = Pegawai::all();
+        $pegawai = Pegawai::with('jabatan')->get();
 
         if ($pegawai->isEmpty()) {
             return response()->json(['success' => true, 'message' => 'Data Pegawai Tidak Ditemukan']);
